@@ -1,0 +1,109 @@
+package com.orangehrm.admin;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.HasInputDevices;
+import org.openqa.selenium.interactions.Keyboard;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest
+{
+
+    WebDriver driver;
+        @Before
+        public void setUp()
+        {
+        driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    }
+    @After
+    public void stop()
+    {
+        driver.quit();
+    }
+
+        @Test
+        public void testTC5OrangehrmCopyactivity071()
+        {
+            driver.get("http://epictester.trial.orangehrmlive.com/");
+            driver.manage().window().maximize();
+
+            WebElement UN;
+            UN=driver.findElement(By.id("txtUsername"));
+            UN.sendKeys("vikram80");
+
+            WebElement PW;
+            PW=driver.findElement(By.id("txtPassword"));
+            PW.sendKeys("cae53fa0e1");
+
+            WebElement LI;
+            LI=driver.findElement(By.id("btnLogin"));
+            LI.click();
+
+            WebElement menu;
+            menu=driver.findElement(By.xpath("//a[@id='menu_time_viewTimeModule']/b"));
+            WebElement smenu = driver.findElement(By.id("menu_attendance_Attendance"));
+            WebElement subMenu = driver.findElement(By.xpath("//div[@id='wrapper']/div[2]/ul/li[3]/ul/li[4]/a"));
+            WebElement subMenu2 = driver.findElement(By.id("menu_admin_viewProjects"));
+            Actions action = new Actions(driver);
+            action.moveToElement(menu).moveToElement(smenu).moveToElement(subMenu).perform();
+            subMenu2.click();
+
+            WebElement LT;
+            LT=driver.findElement(By.linkText("vikram1 dev1"));
+            LT.click();
+
+       /* if(String.equals((driver.findElement(By.tagName("body"))).getText().contains("Vendor Management")))
+        {
+
+        }*/
+      /*  String s = driver.findElement(By.tagName("body")).getText();
+        s.contains("Vendor Management");*/
+
+            WebElement CF;
+            CF=driver.findElement(By.id("btnCopy"));
+            CF.click();
+
+            WebElement PN;
+            PN=driver.findElement(By.id("projectName"));
+            PN.clear();
+            PN.sendKeys("Orange - Citi Bank - Project A");
+            Keyboard keyboard = ((HasInputDevices) driver).getKeyboard();
+            keyboard.pressKey(Keys.ARROW_DOWN);
+            keyboard.pressKey(Keys.ENTER);
+
+            waitSel();
+
+            WebElement CopyC;
+            CopyC=driver.findElement(By.id("btnCopyDig"));
+            CopyC.click();
+            waitSel();
+
+            String LT3;
+            LT3=driver.getPageSource();
+            boolean textfound2 = LT3.contains("Vendor Management");
+            Assert.assertTrue(textfound2);
+    }
+
+    private void waitSel() {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
